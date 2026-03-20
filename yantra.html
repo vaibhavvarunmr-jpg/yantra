@@ -1,1 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Yantra — Run Your Entire Business with AI</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500;9..40,600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#fff;--bg2:#f7f7f5;--dark:#0a0a0a;--dark2:#1a1a1a;--border:#e8e8e4;--border2:#d4d4ce;--green:#16a34a;--muted:#6b6b6b;}
+*{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+body{background:var(--bg);color:var(--dark);font-family:'DM Sans',sans-serif;overflow-x:hidden;}
+nav{position:fixed;top:0;width:100%;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:0 48px;height:60px;background:rgba(255,255,255,0.94);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);}
+.nav-logo{font-family:'Instrument Serif',serif;font-size:20px;color:var(--dark);cursor:pointer;font-style:italic;}
+.nav-links{display:flex;gap:28px;list-style:none;}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:13px;}
+.nav-right{display:flex;gap:10px;align-items:center;}
+.btn-sm{padding:7px 18px;font-size:13px;font-family:'DM Sans',sans-serif;cursor:pointer;border-radius:6px;font-weight:500;transition:all 0.2s;}
+.btn-out{background:transparent;border:1px solid var(--border2);color:var(--dark);}
+.btn-out:hover{border-color:var(--dark);}
+.btn-dark{background:var(--dark);border:none;color:#fff;}
+.btn-dark:hover{background:var(--dark2);}
+.page{display:none;}.page.active{display:block;}#landing{display:block;}
+
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 48px 60px;text-align:center;position:relative;overflow:hidden;}
+.grid-bg{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:48px 48px;opacity:0.7;}
+.grid-mask{position:absolute;inset:0;background:radial-gradient(ellipse at 50% 40%,transparent 20%,rgba(255,255,255,0.97) 75%);}
+.fc{position:absolute;background:#fff;border:1px solid var(--border);border-radius:12px;padding:14px 18px;box-shadow:0 4px 20px rgba(0,0,0,0.07);font-size:12px;white-space:nowrap;animation:float 6s ease-in-out infinite;}
+.fc1{top:18%;left:5%;}.fc2{top:20%;right:5%;animation-delay:-2s;}.fc3{bottom:20%;left:7%;animation-delay:-4s;}.fc4{bottom:18%;right:7%;animation-delay:-1s;}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.fc-l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:4px;}
+.fc-v{font-size:18px;font-weight:600;}.fc-c{font-size:11px;color:var(--green);margin-top:2px;}
+.live-dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--green);animation:blink 2s infinite;}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;background:var(--bg2);border:1px solid var(--border);color:var(--muted);padding:5px 14px;font-size:12px;border-radius:100px;margin-bottom:28px;}
+h1{font-family:'Instrument Serif',serif;font-size:clamp(48px,8vw,96px);line-height:1.02;letter-spacing:-1px;margin-bottom:22px;font-weight:400;}
+h1 em{font-style:italic;color:var(--muted);}
+.hero-sub{font-size:17px;color:var(--muted);max-width:480px;line-height:1.65;margin-bottom:36px;font-weight:300;}
+.hero-ctas{display:flex;gap:12px;justify-content:center;margin-bottom:14px;}
+.btn-lg{padding:13px 32px;font-size:14px;font-family:'DM Sans',sans-serif;cursor:pointer;border-radius:8px;font-weight:500;transition:all 0.2s;}
+.btn-lg-d{background:var(--dark);border:none;color:#fff;}
+.btn-lg-d:hover{background:var(--dark2);transform:translateY(-2px);}
+.btn-lg-l{background:transparent;border:1px solid var(--border2);color:var(--dark);}
+.btn-lg-l:hover{border-color:var(--dark);transform:translateY(-2px);}
+.hero-note{font-size:12px;color:var(--muted);}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);background:var(--dark);}
+.st{padding:36px 28px;border-right:1px solid rgba(255,255,255,0.07);}
+.st:last-child{border-right:none;}
+.st-n{font-family:'Instrument Serif',serif;font-size:44px;color:#fff;font-style:italic;line-height:1;margin-bottom:8px;}
+.st-l{font-size:13px;color:rgba(255,255,255,0.4);font-weight:300;}
+.sec{padding:96px 48px;}.sec-alt{background:var(--bg2);}
+.sec-lbl{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:14px;}
+.sec-h{font-family:'Instrument Serif',serif;font-size:clamp(36px,5vw,58px);font-weight:400;line-height:1.1;letter-spacing:-0.5px;margin-bottom:14px;}
+.sec-h em{font-style:italic;color:var(--muted);}
+.sec-p{font-size:15px;color:var(--muted);max-width:460px;line-height:1.7;font-weight:300;margin-bottom:52px;}
+.bento{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.bc{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:28px;transition:all 0.3s;}
+.bc:hover{border-color:var(--border2);box-shadow:0 6px 24px rgba(0,0,0,0.07);transform:translateY(-3px);}
+.bc.wide{grid-column:span 2;}
+.bc-icon{width:38px;height:38px;background:var(--bg2);border:1px solid var(--border);border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:17px;margin-bottom:18px;}
+.bc-t{font-size:15px;font-weight:600;margin-bottom:8px;}
+.bc-d{font-size:13px;color:var(--muted);line-height:1.6;font-weight:300;}
+.pgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+.pc{background:var(--bg);border:1px solid var(--border);border-radius:14px;padding:32px;transition:all 0.3s;}
+.pc:hover{box-shadow:0 10px 36px rgba(0,0,0,0.08);transform:translateY(-4px);}
+.pc.feat{background:var(--dark);border-color:var(--dark);color:#fff;}
+.pc-badge{display:inline-block;background:rgba(255,255,255,0.12);color:#fff;font-size:10px;letter-spacing:1px;padding:3px 10px;border-radius:100px;margin-bottom:18px;text-transform:uppercase;}
+.pc-tier{font-size:11px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-bottom:10px;}
+.pc.feat .pc-tier{color:rgba(255,255,255,0.45);}
+.pc-amt{font-family:'Instrument Serif',serif;font-size:50px;font-weight:400;font-style:italic;line-height:1;margin-bottom:4px;}
+.pc.feat .pc-amt{color:#fff;}
+.pc-per{font-size:12px;color:var(--muted);margin-bottom:24px;}
+.pc.feat .pc-per{color:rgba(255,255,255,0.4);}
+.pc-list{list-style:none;display:flex;flex-direction:column;gap:11px;margin-bottom:28px;}
+.pc-list li{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:9px;font-weight:300;}
+.pc.feat .pc-list li{color:rgba(255,255,255,0.65);}
+.pc-list li::before{content:'✓';color:var(--green);font-weight:700;font-size:12px;}
+.pc.feat .pc-list li::before{color:rgba(255,255,255,0.6);}
+.pc-btn{width:100%;padding:12px;font-size:13px;font-family:'DM Sans',sans-serif;font-weight:500;border-radius:7px;cursor:pointer;transition:all 0.2s;}
+.pc-btn-o{background:transparent;border:1px solid var(--border2);color:var(--dark);}
+.pc-btn-w{background:#fff;border:none;color:var(--dark);}
+.pc-btn-d{background:var(--dark);border:none;color:#fff;}
+.cta-sec{background:var(--dark);padding:100px 48px;text-align:center;position:relative;overflow:hidden;}
+.cta-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:48px 48px;}
+.cta-sec h2{font-family:'Instrument Serif',serif;font-size:clamp(40px,6vw,70px);color:#fff;font-weight:400;line-height:1.05;letter-spacing:-0.5px;margin-bottom:18px;position:relative;}
+.cta-sec h2 em{font-style:italic;color:rgba(255,255,255,0.45);}
+.cta-sec p{font-size:16px;color:rgba(255,255,255,0.45);margin-bottom:36px;font-weight:300;position:relative;}
+.cta-btns{display:flex;gap:12px;justify-content:center;position:relative;}
+.btn-w{background:#fff;border:none;color:var(--dark);padding:13px 34px;font-size:14px;font-weight:500;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.btn-w:hover{transform:translateY(-2px);}
+.btn-gw{background:transparent;border:1px solid rgba(255,255,255,0.18);color:#fff;padding:13px 34px;font-size:14px;border-radius:8px;cursor:pointer;font-family:'DM Sans',sans-serif;}
+footer{background:var(--dark);border-top:1px solid rgba(255,255,255,0.07);padding:36px 48px;display:flex;justify-content:space-between;align-items:center;}
+.fl{font-family:'Instrument Serif',serif;font-size:17px;color:#fff;font-style:italic;}
+.fc-copy{font-size:12px;color:rgba(255,255,255,0.28);}
+
+/* MODAL */
+.mo{position:fixed;inset:0;background:rgba(0,0,0,0.5);backdrop-filter:blur(8px);z-index:500;display:none;align-items:center;justify-content:center;}
+.mo.open{display:flex;}
+.modal{background:#fff;border-radius:18px;padding:44px;width:100%;max-width:400px;position:relative;animation:mi 0.3s cubic-bezier(0.16,1,0.3,1);box-shadow:0 32px 80px rgba(0,0,0,0.12);}
+@keyframes mi{from{transform:scale(0.95);opacity:0}to{transform:scale(1);opacity:1}}
+.mc{position:absolute;top:14px;right:14px;background:var(--bg2);border:none;width:28px;height:28px;border-radius:50%;color:var(--muted);font-size:13px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.mt{font-family:'Instrument Serif',serif;font-size:24px;margin-bottom:4px;font-style:italic;}
+.ms{font-size:13px;color:var(--muted);margin-bottom:26px;font-weight:300;}
+.fg{margin-bottom:14px;}
+.fl-lbl{font-size:10px;font-weight:500;color:var(--muted);margin-bottom:5px;display:block;letter-spacing:0.5px;text-transform:uppercase;}
+.fi{width:100%;background:var(--bg2);border:1px solid var(--border);color:var(--dark);padding:10px 13px;font-family:'DM Sans',sans-serif;font-size:14px;border-radius:7px;outline:none;transition:border 0.2s;}
+.fi:focus{border-color:var(--dark);background:#fff;}
+.fi::placeholder{color:var(--border2);}
+.fsub{width:100%;background:var(--dark);border:none;color:#fff;padding:12px;font-family:'DM Sans',sans-serif;font-size:14px;font-weight:500;border-radius:7px;cursor:pointer;margin-top:4px;transition:all 0.2s;}
+.fsub:hover{background:var(--dark2);}
+.fsub:disabled{opacity:0.5;cursor:not-allowed;}
+.ferr{font-size:12px;color:#dc2626;margin-top:8px;display:none;}
+.ferr.show{display:block;}
+.fsw{text-align:center;margin-top:18px;font-size:13px;color:var(--muted);}
+.fsw a{color:var(--dark);cursor:pointer;font-weight:500;}
+.fdiv{display:flex;align-items:center;gap:10px;margin:18px 0;}
+.fdiv::before,.fdiv::after{content:'';flex:1;height:1px;background:var(--border);}
+.fdiv span{font-size:11px;color:var(--muted);}
+
+/* DASHBOARD */
+#dashboard{display:none;background:var(--bg2);}
+#dashboard.active{display:block;}
+.dnav{position:fixed;top:0;width:100%;height:56px;background:#fff;border-bottom:1px solid var(--border);z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 22px;}
+.dnav-logo{font-family:'Instrument Serif',serif;font-size:17px;font-style:italic;}
+.dnav-r{display:flex;align-items:center;gap:14px;}
+.dnav-u{font-size:13px;color:var(--muted);}
+.dlayout{display:flex;min-height:100vh;padding-top:56px;}
+.sb{width:220px;background:#fff;border-right:1px solid var(--border);padding:18px 0;flex-shrink:0;position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto;}
+.sb-sec{padding:0 10px;margin-bottom:22px;}
+.sb-lbl{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--border2);padding:0 8px;margin-bottom:5px;font-weight:500;}
+.sb-it{display:flex;align-items:center;gap:9px;padding:8px 10px;border-radius:7px;font-size:13px;color:var(--muted);cursor:pointer;transition:all 0.15s;border:none;background:none;width:100%;text-align:left;font-family:'DM Sans',sans-serif;}
+.sb-it:hover,.sb-it.active{background:var(--bg2);color:var(--dark);}
+.sb-it.active{font-weight:500;}
+.sb-ic{font-size:14px;width:18px;text-align:center;}
+.sb-bdg{margin-left:auto;background:var(--dark);color:#fff;font-size:10px;padding:1px 6px;border-radius:100px;font-weight:600;}
+.dmain{flex:1;padding:26px;overflow-y:auto;}
+.dtop{display:flex;justify-content:space-between;align-items:center;margin-bottom:22px;}
+.dg-txt{font-size:11px;color:var(--muted);margin-bottom:3px;text-transform:uppercase;letter-spacing:1px;}
+.dtt{font-family:'Instrument Serif',serif;font-size:26px;font-style:italic;}
+.mets{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;margin-bottom:18px;}
+.met{background:#fff;border:1px solid var(--border);border-radius:11px;padding:18px;}
+.met-l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-bottom:9px;}
+.met-v{font-family:'Instrument Serif',serif;font-size:28px;font-style:italic;color:var(--dark);margin-bottom:5px;}
+.met-c{font-size:11px;color:var(--green);}
+.dg2{display:grid;grid-template-columns:1.5fr 1fr;gap:14px;margin-bottom:14px;}
+.dc{background:#fff;border:1px solid var(--border);border-radius:11px;padding:18px;}
+.dc-t{font-size:13px;font-weight:500;color:var(--dark);margin-bottom:14px;display:flex;justify-content:space-between;align-items:center;}
+
+/* BUILDER */
+.builder-card{background:#fff;border:1px solid var(--border);border-radius:14px;padding:28px;margin-bottom:18px;}
+.builder-t{font-size:15px;font-weight:600;margin-bottom:6px;}
+.builder-s{font-size:13px;color:var(--muted);margin-bottom:20px;font-weight:300;}
+.b-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px;}
+.b-input{background:var(--bg2);border:1px solid var(--border);color:var(--dark);padding:10px 13px;font-family:'DM Sans',sans-serif;font-size:13px;border-radius:7px;outline:none;width:100%;transition:all 0.2s;}
+.b-input:focus{border-color:var(--dark);background:#fff;}
+.b-input::placeholder{color:var(--border2);}
+.b-textarea{background:var(--bg2);border:1px solid var(--border);color:var(--dark);padding:10px 13px;font-family:'DM Sans',sans-serif;font-size:13px;border-radius:7px;outline:none;width:100%;min-height:80px;resize:vertical;margin-bottom:12px;}
+.b-textarea:focus{border-color:var(--dark);background:#fff;}
+.b-btn{background:var(--dark);border:none;color:#fff;padding:12px 24px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:500;border-radius:7px;cursor:pointer;display:inline-flex;align-items:center;gap:8px;transition:all 0.2s;}
+.b-btn:hover{background:var(--dark2);}
+.b-btn:disabled{opacity:0.5;cursor:not-allowed;}
+.b-status{font-size:12px;color:var(--muted);margin-left:12px;}
+.wo{display:none;margin-top:20px;}
+.wo.show{display:block;}
+.wo-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;}
+.wo-title{font-size:13px;font-weight:500;}
+.wo-actions{display:flex;gap:8px;}
+.wo-btn{background:var(--bg2);border:1px solid var(--border);color:var(--dark);padding:6px 14px;font-size:12px;font-weight:500;border-radius:6px;cursor:pointer;font-family:'DM Sans',sans-serif;}
+.wo-btn-p{background:var(--dark);border-color:var(--dark);color:#fff;}
+.w-preview{width:100%;height:500px;border:1px solid var(--border);border-radius:10px;}
+.code-box{display:none;background:#1a1a1a;border-radius:10px;padding:20px;max-height:400px;overflow-y:auto;margin-top:10px;}
+.code-box.show{display:block;}
+.code-box pre{font-size:11px;color:#e0e0e0;font-family:'Courier New',monospace;line-height:1.6;white-space:pre-wrap;word-break:break-all;}
+
+/* WEBSITES LIST */
+.websites-list{display:flex;flex-direction:column;gap:10px;}
+.website-item{background:#fff;border:1px solid var(--border);border-radius:10px;padding:16px 20px;display:flex;align-items:center;justify-content:space-between;transition:all 0.2s;}
+.website-item:hover{border-color:var(--border2);box-shadow:0 4px 12px rgba(0,0,0,0.05);}
+.website-item-name{font-size:14px;font-weight:500;}
+.website-item-meta{font-size:12px;color:var(--muted);}
+.website-item-btn{background:var(--dark);color:#fff;border:none;padding:7px 16px;font-size:12px;border-radius:6px;cursor:pointer;font-family:'DM Sans',sans-serif;}
+
+/* ACTIVITY */
+.act{display:flex;gap:9px;padding:9px 0;border-bottom:1px solid var(--border);}
+.act:last-child{border-bottom:none;}
+.act-av{width:28px;height:28px;border-radius:7px;background:var(--bg2);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;}
+.act-tx{font-size:12px;line-height:1.5;color:var(--muted);}
+.act-tx strong{color:var(--dark);font-weight:500;}
+.act-tm{font-size:10px;color:var(--border2);margin-top:1px;}
+.pip{display:flex;flex-direction:column;gap:9px;}
+.pi{display:flex;align-items:center;gap:9px;}
+.pil{font-size:11px;color:var(--muted);width:72px;flex-shrink:0;}
+.pib{flex:1;height:4px;background:var(--bg2);border-radius:100px;overflow:hidden;}
+.pif{height:100%;background:var(--dark);border-radius:100px;transition:width 1.2s cubic-bezier(0.16,1,0.3,1);}
+.piv{font-size:11px;color:var(--muted);width:40px;text-align:right;font-weight:500;}
+.spin{display:inline-block;width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,0.3);border-top-color:#fff;animation:spin 1s linear infinite;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.reveal{opacity:0;transform:translateY(20px);transition:opacity 0.7s cubic-bezier(0.16,1,0.3,1),transform 0.7s cubic-bezier(0.16,1,0.3,1);}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.d1{transition-delay:0.05s;}.d2{transition-delay:0.1s;}.d3{transition-delay:0.15s;}.d4{transition-delay:0.2s;}.d5{transition-delay:0.25s;}.d6{transition-delay:0.3s;}
+@media(max-width:768px){nav{padding:0 20px;}.nav-links{display:none;}.hero{padding:80px 20px 60px;}.fc{display:none;}.stats-row{grid-template-columns:1fr 1fr;}.sec{padding:60px 20px;}.bento,.pgrid{grid-template-columns:1fr;}.bc.wide{grid-column:span 1;}.cta-sec{padding:60px 20px;}footer{flex-direction:column;gap:14px;text-align:center;padding:24px 20px;}.dlayout{flex-direction:column;}.sb{width:100%;height:auto;position:static;}.mets{grid-template-columns:1fr 1fr;}.dg2{grid-template-columns:1fr;}.dmain{padding:14px;}.b-row{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <div class="nav-logo" onclick="showPage('landing')">Yantra</div>
+  <ul class="nav-links"><li><a href="#feat">Features</a></li><li><a href="#pricing">Pricing</a></li></ul>
+  <div class="nav-right" id="navRight">
+    <button class="btn-sm btn-out" onclick="openModal('login')">Sign in</button>
+    <button class="btn-sm btn-dark" onclick="openModal('signup')">Get started →</button>
+  </div>
+</nav>
+
+<!-- LANDING -->
+<div id="landing" class="page active">
+<section class="hero">
+  <div class="grid-bg"></div><div class="grid-mask"></div>
+  <div class="fc fc1"><div class="fc-l">Monthly Revenue</div><div class="fc-v">₹84,200</div><div class="fc-c">↑ 23% this month</div></div>
+  <div class="fc fc2"><div class="fc-l">AI Status</div><div class="fc-v"><span class="live-dot"></span> 4 agents active</div><div class="fc-c">Running 24/7</div></div>
+  <div class="fc fc3"><div class="fc-l">Active Leads</div><div class="fc-v">142</div><div class="fc-c">↑ 18 new today</div></div>
+  <div class="fc fc4"><div class="fc-l">Ad ROI</div><div class="fc-v">4.2×</div><div class="fc-c">All campaigns live</div></div>
+  <div class="eyebrow"><span class="live-dot"></span> AI Business Operating System</div>
+  <h1>Run your whole<br>business. <em>One prompt.</em></h1>
+  <p class="hero-sub">Yantra builds your website, deploys your AI sales team, launches ad campaigns, manages accounting — and runs everything 24/7. No employees required.</p>
+  <div class="hero-ctas">
+    <button class="btn-lg btn-lg-d" onclick="openModal('signup')">Start for free →</button>
+    <button class="btn-lg btn-lg-l" onclick="showPage('dashboard')">See demo</button>
+  </div>
+  <div class="hero-note">Free to start · No credit card · Live in 3 minutes</div>
+</section>
+<div class="stats-row">
+  <div class="st"><div class="st-n">3 min</div><div class="st-l">Average launch time</div></div>
+  <div class="st"><div class="st-n">0</div><div class="st-l">Employees needed</div></div>
+  <div class="st"><div class="st-n">4.2×</div><div class="st-l">Average ad ROI</div></div>
+  <div class="st"><div class="st-n">24/7</div><div class="st-l">AI team active</div></div>
+</div>
+<section class="sec" id="feat">
+  <div class="sec-lbl reveal">Everything included</div>
+  <div class="sec-h reveal d1">Six AI systems.<br><em>One platform.</em></div>
+  <div class="sec-p reveal d2">Every tool a business needs — built in and running from day one.</div>
+  <div class="bento">
+    <div class="bc wide reveal d1"><div class="bc-icon">🌐</div><div class="bc-t">AI Website Builder</div><div class="bc-d">Generate a complete, professional website for any business in seconds. Real HTML you can download and deploy instantly.</div></div>
+    <div class="bc reveal d2"><div class="bc-icon">🤖</div><div class="bc-t">AI Sales Team</div><div class="bc-d">Virtual agents handle inquiries, pitch your product and close deals automatically, around the clock.</div></div>
+    <div class="bc reveal d3"><div class="bc-icon">📢</div><div class="bc-t">Ad Campaigns</div><div class="bc-d">AI creates and runs campaigns across Google, Meta and Instagram. Automatic optimization. Maximum ROI.</div></div>
+    <div class="bc reveal d4"><div class="bc-icon">📊</div><div class="bc-t">Accounting</div><div class="bc-d">Revenue, expenses, invoices and taxes tracked automatically. Real-time dashboard with monthly reports.</div></div>
+    <div class="bc reveal d5"><div class="bc-icon">📞</div><div class="bc-t">AI Call Center</div><div class="bc-d">Answers every customer call, resolves queries, books appointments. Escalates only what needs you.</div></div>
+    <div class="bc reveal d6"><div class="bc-icon">👥</div><div class="bc-t">CRM & Operations</div><div class="bc-d">Contacts, orders, inventory and email marketing in one unified hub. Everything automatic.</div></div>
+  </div>
+</section>
+<section class="sec sec-alt" id="pricing">
+  <div class="sec-lbl reveal">Pricing</div>
+  <div class="sec-h reveal d1">Simple, transparent<br><em>pricing.</em></div>
+  <div class="pgrid">
+    <div class="pc reveal d1"><div class="pc-tier">Starter</div><div class="pc-amt">$0</div><div class="pc-per">Free forever</div><ul class="pc-list"><li>1 business</li><li>AI website builder</li><li>3 free websites</li><li>Revenue dashboard</li></ul><button class="pc-btn pc-btn-o" onclick="openModal('signup')">Get started free</button></div>
+    <div class="pc feat reveal d2"><div class="pc-badge">Most popular</div><div class="pc-tier">Growth</div><div class="pc-amt">$49</div><div class="pc-per">per month</div><ul class="pc-list"><li>Unlimited websites</li><li>Full AI sales team</li><li>Ad campaign manager</li><li>AI call center</li><li>Accounting & invoicing</li></ul><button class="pc-btn pc-btn-w" onclick="openModal('signup')">Start Growth →</button></div>
+    <div class="pc reveal d3"><div class="pc-tier">Enterprise</div><div class="pc-amt">$199</div><div class="pc-per">per month</div><ul class="pc-list"><li>Everything in Growth</li><li>Custom AI agents</li><li>White-label platform</li><li>Full API access</li><li>Investor-ready reports</li></ul><button class="pc-btn pc-btn-d" onclick="openModal('signup')">Contact sales</button></div>
+  </div>
+</section>
+<div class="cta-sec"><div class="cta-grid"></div><h2>Your business.<br><em>Running tonight.</em></h2><p>Join thousands of founders who launched with a single prompt.</p><div class="cta-btns"><button class="btn-w" onclick="openModal('signup')">Start for free →</button><button class="btn-gw" onclick="showPage('dashboard')">View demo</button></div></div>
+<footer><div class="fl">Yantra</div><div class="fc-copy">© 2025 Yantra · AI Business Operating System</div></footer>
+</div>
+
+<!-- DASHBOARD -->
+<div id="dashboard" class="page">
+  <nav class="dnav">
+    <div class="dnav-logo">Yantra</div>
+    <div class="dnav-r"><div class="dnav-u" id="dashUser">Loading...</div><button class="btn-sm btn-out" onclick="logout()">Sign out</button></div>
+  </nav>
+  <div class="dlayout">
+    <aside class="sb">
+      <div class="sb-sec">
+        <div class="sb-lbl">Main</div>
+        <button class="sb-it active" onclick="switchTab(this,'overview')"><span class="sb-ic">⚡</span> Dashboard</button>
+        <button class="sb-it" onclick="switchTab(this,'builder')"><span class="sb-ic">🌐</span> Build Website</button>
+        <button class="sb-it" onclick="switchTab(this,'websites')"><span class="sb-ic">📁</span> My Websites</button>
+      </div>
+      <div class="sb-sec">
+        <div class="sb-lbl">Account</div>
+        <button class="sb-it" onclick="logout()"><span class="sb-ic">🚪</span> Sign out</button>
+      </div>
+    </aside>
+    <main class="dmain">
+
+      <!-- OVERVIEW TAB -->
+      <div id="tab-overview">
+        <div class="dtop">
+          <div><div class="dg-txt">Welcome back, <span id="uname">...</span></div><div class="dtt">Business Overview</div></div>
+          <button class="btn-sm btn-dark" onclick="switchTab(null,'builder')">+ Build Website</button>
+        </div>
+        <div class="mets">
+          <div class="met"><div class="met-l">Websites Built</div><div class="met-v" id="metWebsites">0</div><div class="met-c">Your portfolio</div></div>
+          <div class="met"><div class="met-l">Plan</div><div class="met-v" id="metPlan">Starter</div><div class="met-c">Current plan</div></div>
+          <div class="met"><div class="met-l">AI Status</div><div class="met-v">Live</div><div class="met-c">↑ All systems active</div></div>
+          <div class="met"><div class="met-l">Member Since</div><div class="met-v" id="metSince">Today</div><div class="met-c">Welcome!</div></div>
+        </div>
+        <div class="dg2">
+          <div class="dc">
+            <div class="dc-t">Sales Pipeline</div>
+            <div class="pip">
+              <div class="pi"><div class="pil">Awareness</div><div class="pib"><div class="pif" style="width:92%"></div></div><div class="piv">1,240</div></div>
+              <div class="pi"><div class="pil">Interest</div><div class="pib"><div class="pif" style="width:68%"></div></div><div class="piv">845</div></div>
+              <div class="pi"><div class="pil">Leads</div><div class="pib"><div class="pif" style="width:42%"></div></div><div class="piv">142</div></div>
+              <div class="pi"><div class="pil">Closed</div><div class="pib"><div class="pif" style="width:14%"></div></div><div class="piv">24</div></div>
+            </div>
+          </div>
+          <div class="dc">
+            <div class="dc-t">Live Activity <span style="font-size:11px;color:var(--green);display:flex;align-items:center;gap:4px;"><span class="live-dot"></span>Live</span></div>
+            <div class="act"><div class="act-av">🤖</div><div><div class="act-tx"><strong>Sales Agent</strong> pitched a new lead</div><div class="act-tm">2 min ago</div></div></div>
+            <div class="act"><div class="act-av">📞</div><div><div class="act-tx"><strong>Call Agent</strong> handled inquiry</div><div class="act-tm">8 min ago</div></div></div>
+            <div class="act"><div class="act-av">📢</div><div><div class="act-tx"><strong>Ad Manager</strong> optimized campaign</div><div class="act-tm">15 min ago</div></div></div>
+            <div class="act"><div class="act-av">💰</div><div><div class="act-tx"><strong>Sales Agent</strong> closed deal</div><div class="act-tm">31 min ago</div></div></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- BUILDER TAB -->
+      <div id="tab-builder" style="display:none;">
+        <div class="dtop"><div><div class="dg-txt">AI Powered</div><div class="dtt">Website Builder</div></div></div>
+        <div class="builder-card">
+          <div class="builder-t">Generate a real website with AI</div>
+          <div class="builder-s">Enter your business details — Claude AI builds a complete, professional website instantly. Each website is saved to your account.</div>
+          <div class="b-row">
+            <input class="b-input" id="biz-name" placeholder="Business name (e.g. BrewHouse Café)" />
+            <input class="b-input" id="biz-type" placeholder="Business type (e.g. Coffee Shop)" />
+          </div>
+          <div class="b-row">
+            <input class="b-input" id="biz-location" placeholder="Location (e.g. Muvattupuzha, Kerala)" />
+            <input class="b-input" id="biz-phone" placeholder="Phone number (optional)" />
+          </div>
+          <textarea class="b-textarea" id="biz-desc" placeholder="Describe your business, services, anything special..."></textarea>
+          <div style="display:flex;align-items:center;">
+            <button class="b-btn" id="buildBtn" onclick="buildWebsite()"><span>✦</span> Generate Website with AI</button>
+            <span class="b-status" id="buildStatus"></span>
+          </div>
+          <div class="wo" id="websiteOutput">
+            <div class="wo-header">
+              <div class="wo-title" id="wo-title">Generated Website</div>
+              <div class="wo-actions">
+                <button class="wo-btn" onclick="toggleCode(event)">View Code</button>
+                <button class="wo-btn wo-btn-p" onclick="downloadWebsite()">↓ Download HTML</button>
+              </div>
+            </div>
+            <iframe class="w-preview" id="websitePreview" sandbox="allow-scripts allow-same-origin"></iframe>
+            <div class="code-box" id="codeView"><pre id="codeContent"></pre></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- MY WEBSITES TAB -->
+      <div id="tab-websites" style="display:none;">
+        <div class="dtop"><div><div class="dg-txt">Your portfolio</div><div class="dtt">My Websites</div></div><button class="btn-sm btn-dark" onclick="switchTab(null,'builder')">+ Build New</button></div>
+        <div class="builder-card">
+          <div id="websitesList"><div style="text-align:center;padding:40px;color:var(--muted);font-size:14px;">Loading your websites...</div></div>
+        </div>
+      </div>
+
+    </main>
+  </div>
+</div>
+
+<!-- AUTH MODAL -->
+<div class="mo" id="modal">
+  <div class="modal">
+    <button class="mc" onclick="closeModal()">✕</button>
+    <div id="loginForm">
+      <div class="mt">Welcome back</div>
+      <div class="ms">Sign in to your Yantra account.</div>
+      <div class="fg"><label class="fl-lbl">Email</label><input class="fi" type="email" placeholder="you@example.com" id="loginEmail"/></div>
+      <div class="fg"><label class="fl-lbl">Password</label><input class="fi" type="password" placeholder="••••••••" id="loginPass"/></div>
+      <div class="ferr" id="loginErr"></div>
+      <button class="fsub" id="loginBtn" onclick="doLogin()">Sign in →</button>
+      <div class="fdiv"><span>or</span></div>
+      <div class="fsw">No account? <a onclick="switchModal('signup')">Sign up free</a></div>
+    </div>
+    <div id="signupForm" style="display:none;">
+      <div class="mt">Get started free</div>
+      <div class="ms">Launch your business in 3 minutes.</div>
+      <div class="fg"><label class="fl-lbl">Full name</label><input class="fi" type="text" placeholder="Your name" id="signupName"/></div>
+      <div class="fg"><label class="fl-lbl">Email</label><input class="fi" type="email" placeholder="you@example.com" id="signupEmail"/></div>
+      <div class="fg"><label class="fl-lbl">Password</label><input class="fi" type="password" placeholder="Create a password (min 6 chars)" id="signupPass"/></div>
+      <div class="ferr" id="signupErr"></div>
+      <button class="fsub" id="signupBtn" onclick="doSignup()">Create account →</button>
+      <div class="fdiv"><span>or</span></div>
+      <div class="fsw">Have an account? <a onclick="switchModal('login')">Sign in</a></div>
+    </div>
+  </div>
+</div>
+
+<script>
+// ─── CONFIG ───
+const API = 'https://yantrabackend-production.up.railway.app';
+let token = localStorage.getItem('yantra_token');
+let currentUser = JSON.parse(localStorage.getItem('yantra_user') || 'null');
+let generatedHTML = '';
+
+// ─── INIT ───
+window.addEventListener('load', () => {
+  if (token && currentUser) {
+    updateNav();
+    showPage('dashboard');
+    loadProfile();
+  }
+});
+
+// ─── SCROLL REVEAL ───
+window.addEventListener('scroll', () => {
+  document.querySelectorAll('.reveal').forEach(el => {
+    if (el.getBoundingClientRect().top < window.innerHeight * 0.9) el.classList.add('visible');
+  });
+});
+setTimeout(() => document.querySelectorAll('.reveal').forEach(el => {
+  if (el.getBoundingClientRect().top < window.innerHeight * 0.9) el.classList.add('visible');
+}), 100);
+
+// ─── PAGES ───
+function showPage(id) {
+  document.querySelectorAll('.page').forEach(p => { p.classList.remove('active'); p.style.display = 'none'; });
+  const pg = document.getElementById(id);
+  pg.style.display = 'block';
+  setTimeout(() => pg.classList.add('active'), 10);
+  window.scrollTo(0, 0);
+  if (id === 'dashboard') loadProfile();
+}
+
+// ─── TABS ───
+function switchTab(el, tab) {
+  if (el) { document.querySelectorAll('.sb-it').forEach(i => i.classList.remove('active')); el.classList.add('active'); }
+  ['overview', 'builder', 'websites'].forEach(t => {
+    const el = document.getElementById('tab-' + t);
+    if (el) el.style.display = t === tab ? 'block' : 'none';
+  });
+  if (tab === 'websites') loadWebsites();
+  if (tab === 'overview') {
+    setTimeout(() => {
+      document.querySelectorAll('.pif').forEach(b => { const w = b.style.width; b.style.width = '0'; setTimeout(() => { b.style.width = w; }, 100); });
+    }, 100);
+  }
+}
+
+// ─── AUTH ───
+function openModal(t) { document.getElementById('modal').classList.add('open'); switchModal(t); }
+function closeModal() { document.getElementById('modal').classList.remove('open'); }
+document.getElementById('modal').addEventListener('click', e => { if (e.target === document.getElementById('modal')) closeModal(); });
+function switchModal(t) {
+  document.getElementById('loginForm').style.display = t === 'login' ? 'block' : 'none';
+  document.getElementById('signupForm').style.display = t === 'signup' ? 'block' : 'none';
+}
+
+async function doLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass = document.getElementById('loginPass').value;
+  const errEl = document.getElementById('loginErr');
+  const btn = document.getElementById('loginBtn');
+  if (!email || !pass) { errEl.textContent = 'Please enter email and password.'; errEl.classList.add('show'); return; }
+  btn.disabled = true; btn.innerHTML = '<div class="spin"></div> Signing in...';
+  errEl.classList.remove('show');
+  try {
+    const res = await fetch(`${API}/auth/signin`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email, password: pass }) });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Login failed');
+    token = data.token;
+    currentUser = data.user;
+    localStorage.setItem('yantra_token', token);
+    localStorage.setItem('yantra_user', JSON.stringify(currentUser));
+    updateNav(); closeModal(); showPage('dashboard');
+  } catch (err) {
+    errEl.textContent = err.message; errEl.classList.add('show');
+  } finally {
+    btn.disabled = false; btn.innerHTML = 'Sign in →';
+  }
+}
+
+async function doSignup() {
+  const name = document.getElementById('signupName').value.trim();
+  const email = document.getElementById('signupEmail').value.trim();
+  const pass = document.getElementById('signupPass').value;
+  const errEl = document.getElementById('signupErr');
+  const btn = document.getElementById('signupBtn');
+  if (!name || !email || !pass) { errEl.textContent = 'Please fill in all fields.'; errEl.classList.add('show'); return; }
+  if (pass.length < 6) { errEl.textContent = 'Password must be at least 6 characters.'; errEl.classList.add('show'); return; }
+  btn.disabled = true; btn.innerHTML = '<div class="spin"></div> Creating account...';
+  errEl.classList.remove('show');
+  try {
+    const res = await fetch(`${API}/auth/signup`, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ name, email, password: pass }) });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Signup failed');
+    closeModal();
+    // Auto login after signup
+    setTimeout(() => { openModal('login'); document.getElementById('loginEmail').value = email; }, 300);
+    alert('Account created! Please sign in now.');
+  } catch (err) {
+    errEl.textContent = err.message; errEl.classList.add('show');
+  } finally {
+    btn.disabled = false; btn.innerHTML = 'Create account →';
+  }
+}
+
+function logout() {
+  localStorage.removeItem('yantra_token');
+  localStorage.removeItem('yantra_user');
+  token = null; currentUser = null;
+  document.getElementById('navRight').innerHTML = `<button class="btn-sm btn-out" onclick="openModal('login')">Sign in</button><button class="btn-sm btn-dark" onclick="openModal('signup')">Get started →</button>`;
+  showPage('landing');
+}
+
+function updateNav() {
+  if (currentUser) {
+    document.getElementById('navRight').innerHTML = `<span style="font-size:13px;color:var(--muted);">${currentUser.name}</span><button class="btn-sm btn-dark" onclick="showPage('dashboard')">Dashboard →</button>`;
+    document.getElementById('uname').textContent = currentUser.name;
+    document.getElementById('dashUser').textContent = currentUser.name;
+  }
+}
+
+async function loadProfile() {
+  if (!token) return;
+  try {
+    const res = await fetch(`${API}/user/profile`, { headers: { 'Authorization': `Bearer ${token}` } });
+    const data = await res.json();
+    if (data.success) {
+      currentUser = data.user;
+      localStorage.setItem('yantra_user', JSON.stringify(currentUser));
+      document.getElementById('uname').textContent = currentUser.name || 'Founder';
+      document.getElementById('dashUser').textContent = currentUser.name || 'Founder';
+      document.getElementById('metWebsites').textContent = currentUser.websites_built || 0;
+      document.getElementById('metPlan').textContent = currentUser.plan || 'Starter';
+      const date = new Date(currentUser.created_at);
+      document.getElementById('metSince').textContent = date.toLocaleDateString('en-IN', { month: 'short', year: 'numeric' });
+    }
+  } catch (e) { console.log('Profile load error:', e); }
+}
+
+// ─── WEBSITE BUILDER ───
+async function buildWebsite() {
+  if (!token) { alert('Please sign in first.'); openModal('login'); return; }
+  const name = document.getElementById('biz-name').value.trim();
+  const type = document.getElementById('biz-type').value.trim();
+  const location = document.getElementById('biz-location').value.trim();
+  const phone = document.getElementById('biz-phone').value.trim();
+  const desc = document.getElementById('biz-desc').value.trim();
+  if (!name || !type) { alert('Please enter a business name and type.'); return; }
+  const btn = document.getElementById('buildBtn');
+  const status = document.getElementById('buildStatus');
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spin"></div> Generating...';
+  status.textContent = 'Claude AI is building your website...';
+  status.style.color = 'var(--muted)';
+  try {
+    const res = await fetch(`${API}/ai/build-website`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify({ name, type, location, phone, description: desc })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Generation failed');
+    generatedHTML = data.html;
+    document.getElementById('websitePreview').srcdoc = data.html;
+    document.getElementById('codeContent').textContent = data.html;
+    document.getElementById('wo-title').textContent = `${name} — Generated Website`;
+    document.getElementById('websiteOutput').classList.add('show');
+    status.textContent = '✓ Website generated and saved to your account!';
+    status.style.color = 'var(--green)';
+    // Update websites count
+    const wCount = document.getElementById('metWebsites');
+    wCount.textContent = parseInt(wCount.textContent || 0) + 1;
+  } catch (err) {
+    status.textContent = `Error: ${err.message}`;
+    status.style.color = '#dc2626';
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = '<span>✦</span> Generate Website with AI';
+  }
+}
+
+// ─── LOAD WEBSITES ───
+async function loadWebsites() {
+  if (!token) return;
+  const container = document.getElementById('websitesList');
+  container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted);font-size:14px;">Loading...</div>';
+  try {
+    const res = await fetch(`${API}/user/websites`, { headers: { 'Authorization': `Bearer ${token}` } });
+    const data = await res.json();
+    if (!data.websites || data.websites.length === 0) {
+      container.innerHTML = '<div style="text-align:center;padding:40px;color:var(--muted);font-size:14px;">No websites yet. <a href="#" onclick="switchTab(null,\'builder\');return false;" style="color:var(--dark);font-weight:500;">Build your first one →</a></div>';
+      return;
+    }
+    container.innerHTML = `<div class="websites-list">${data.websites.map(w => `
+      <div class="website-item">
+        <div>
+          <div class="website-item-name">${w.business_name}</div>
+          <div class="website-item-meta">${w.business_type} · ${w.location || 'India'} · ${new Date(w.created_at).toLocaleDateString('en-IN')}</div>
+        </div>
+        <button class="website-item-btn" onclick="viewWebsite('${w.id}')">View →</button>
+      </div>`).join('')}</div>`;
+  } catch (e) {
+    container.innerHTML = '<div style="text-align:center;padding:40px;color:#dc2626;font-size:14px;">Failed to load websites.</div>';
+  }
+}
+
+async function viewWebsite(id) {
+  try {
+    const res = await fetch(`${API}/user/websites/${id}`, { headers: { 'Authorization': `Bearer ${token}` } });
+    const data = await res.json();
+    if (data.website) {
+      generatedHTML = data.website.html_code;
+      switchTab(null, 'builder');
+      document.getElementById('biz-name').value = data.website.business_name;
+      document.getElementById('biz-type').value = data.website.business_type;
+      document.getElementById('websitePreview').srcdoc = data.website.html_code;
+      document.getElementById('codeContent').textContent = data.website.html_code;
+      document.getElementById('wo-title').textContent = `${data.website.business_name} — Website`;
+      document.getElementById('websiteOutput').classList.add('show');
+    }
+  } catch (e) { alert('Failed to load website.'); }
+}
+
+function toggleCode(e) {
+  const cv = document.getElementById('codeView');
+  const btn = e.target;
+  if (cv.classList.contains('show')) { cv.classList.remove('show'); btn.textContent = 'View Code'; }
+  else { cv.classList.add('show'); btn.textContent = 'Hide Code'; }
+}
+
+function downloadWebsite() {
+  if (!generatedHTML) return;
+  const name = document.getElementById('biz-name').value.trim().replace(/\s+/g, '_').toLowerCase();
+  const blob = new Blob([generatedHTML], { type: 'text/html' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `${name || 'website'}.html`; a.click();
+  URL.revokeObjectURL(url);
+}
+
+setTimeout(() => {
+  document.querySelectorAll('.pif').forEach(b => { const w = b.style.width; b.style.width = '0'; setTimeout(() => { b.style.width = w; }, 200); });
+}, 400);
+</script>
+</body>
+</html>
 
