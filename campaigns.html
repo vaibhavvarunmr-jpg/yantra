@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Email Campaigns — Yuga</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--ink:#0c0c0e;--ink2:#1c1c20;--paper:#fafaf8;--paper2:#f3f3f0;--paper3:#eceae5;--rule:#e2e0db;--rule2:#d0cec8;--muted:#8a8880;--green:#2d6a4f;--green2:#dcfce7;--amber:#b45309;--amber2:#fef9c3;--red:#dc2626;--red2:#fee2e2;--r:16px;--r2:24px;}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:var(--paper2);color:var(--ink);font-family:'Outfit',sans-serif;min-height:100vh;}
+
+/* LAYOUT */
+.layout{display:flex;min-height:100vh;}
+.sidebar{width:236px;background:white;border-right:1px solid var(--rule);padding:28px 0;flex-shrink:0;position:sticky;top:0;height:100vh;overflow-y:auto;display:flex;flex-direction:column;}
+.sb-logo{padding:0 20px 24px;border-bottom:1px solid var(--rule);margin-bottom:24px;}
+.sb-logo-main{font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;letter-spacing:2px;color:var(--ink);}
+.sb-logo-sub{font-size:10px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;margin-top:3px;}
+.sb-sec{padding:0 10px;margin-bottom:24px;}
+.sb-lbl{font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);padding:0 10px;margin-bottom:8px;}
+.sb-it{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:10px;font-size:13px;color:var(--muted);cursor:pointer;transition:all 0.2s;border:none;background:none;width:100%;text-align:left;font-family:'Outfit',sans-serif;}
+.sb-it:hover,.sb-it.active{background:var(--paper2);color:var(--ink);}
+.sb-it.active{font-weight:500;}
+.sb-ic{font-size:15px;width:20px;text-align:center;}
+.sb-bdg{margin-left:auto;background:var(--ink);color:white;font-size:10px;padding:2px 7px;border-radius:100px;font-weight:600;}
+.sb-user{margin-top:auto;padding:16px 20px;border-top:1px solid var(--rule);}
+.sb-user-email{font-size:11px;color:var(--muted);font-weight:300;margin-bottom:8px;word-break:break-all;}
+.sb-logout{background:none;border:1px solid var(--rule);color:var(--muted);padding:7px 16px;font-size:12px;border-radius:100px;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.2s;width:100%;}
+.sb-logout:hover{border-color:var(--ink);color:var(--ink);}
+.main{flex:1;padding:44px;overflow-y:auto;min-height:100vh;}
+
+/* TOP */
+.topbar{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:40px;}
+.topbar-left .eyebrow{font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--muted);margin-bottom:8px;}
+.topbar-left .page-title{font-family:'Cormorant Garamond',serif;font-size:40px;font-weight:400;font-style:italic;letter-spacing:-0.3px;line-height:1;}
+.topbar-right{display:flex;gap:10px;align-items:center;padding-top:6px;}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;gap:8px;padding:10px 22px;font-size:13px;font-weight:500;border-radius:100px;cursor:pointer;font-family:'Outfit',sans-serif;transition:all 0.3s;letter-spacing:0.2px;border:none;}
+.btn-primary{background:var(--ink);color:white;}
+.btn-primary:hover{background:var(--ink2);transform:translateY(-1px);box-shadow:0 8px 20px rgba(12,12,14,0.12);}
+.btn-ghost{background:transparent;color:var(--ink);border:1px solid var(--rule2);}
+.btn-ghost:hover{border-color:var(--ink);}
+.btn-danger{background:var(--red2);color:var(--red);border:1px solid #fecaca;}
+.btn-danger:hover{background:#fee2e2;}
+.btn-sm{padding:7px 16px;font-size:12px;}
+.btn:disabled{opacity:0.45;cursor:not-allowed;transform:none;box-shadow:none;}
+
+/* METRICS */
+.mets{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:32px;}
+.met{background:white;border:1px solid var(--rule);border-radius:var(--r2);padding:26px 28px;transition:all 0.3s;}
+.met:hover{transform:translateY(-3px);box-shadow:0 12px 40px rgba(12,12,14,0.06);}
+.met-l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1.5px;margin-bottom:14px;}
+.met-v{font-family:'Cormorant Garamond',serif;font-size:38px;font-weight:400;font-style:italic;color:var(--ink);line-height:1;margin-bottom:6px;}
+.met-c{font-size:12px;color:var(--green);font-weight:500;}
+.met-c.neutral{color:var(--muted);}
+
+/* CARDS */
+.card{background:white;border:1px solid var(--rule);border-radius:var(--r2);padding:28px;}
+.card-title{font-size:14px;font-weight:500;color:var(--ink);margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;}
+.card-title span{font-size:12px;color:var(--muted);font-weight:400;}
+
+/* CAMPAIGN LIST */
+.campaign-grid{display:flex;flex-direction:column;gap:12px;}
+.camp-card{background:white;border:1px solid var(--rule);border-radius:var(--r2);padding:28px 32px;transition:all 0.35s cubic-bezier(0.16,1,0.3,1);cursor:pointer;position:relative;overflow:hidden;}
+.camp-card::after{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--ink);transition:width 0.4s cubic-bezier(0.16,1,0.3,1);}
+.camp-card:hover{transform:translateY(-3px);box-shadow:0 16px 48px rgba(12,12,14,0.07);border-color:var(--rule2);}
+.camp-card:hover::after{width:100%;}
+.camp-row{display:flex;align-items:center;justify-content:space-between;gap:20px;}
+.camp-name{font-family:'Cormorant Garamond',serif;font-size:22px;font-weight:500;letter-spacing:-0.2px;margin-bottom:4px;}
+.camp-meta{font-size:12px;color:var(--muted);font-weight:300;}
+.camp-stats{display:flex;gap:28px;align-items:center;}
+.camp-stat{text-align:right;}
+.camp-stat-v{font-family:'Cormorant Garamond',serif;font-size:24px;font-weight:400;font-style:italic;color:var(--ink);}
+.camp-stat-l{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:2px;}
+.camp-actions{display:flex;gap:8px;align-items:center;}
+
+/* PILL */
+.pill{display:inline-flex;align-items:center;gap:5px;padding:3px 10px;border-radius:100px;font-size:11px;font-weight:500;letter-spacing:0.3px;}
+.pill-green{background:var(--green2);color:var(--green);}
+.pill-amber{background:var(--amber2);color:var(--amber);}
+.pill-muted{background:var(--paper2);color:var(--muted);}
+.pill-red{background:var(--red2);color:var(--red);}
+.pill-dot{width:5px;height:5px;border-radius:50%;background:currentColor;}
+
+/* LAUNCH FORM */
+.form-panel{background:white;border:1px solid var(--rule);border-radius:var(--r2);padding:44px;}
+.form-title{font-family:'Cormorant Garamond',serif;font-size:32px;font-style:italic;font-weight:400;margin-bottom:6px;letter-spacing:-0.2px;}
+.form-sub{font-size:14px;color:var(--muted);font-weight:300;margin-bottom:40px;line-height:1.7;}
+.form-section{margin-bottom:32px;}
+.form-section-title{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--muted);margin-bottom:16px;padding-bottom:10px;border-bottom:1px solid var(--rule);}
+.form-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+.fg{display:flex;flex-direction:column;gap:6px;}
+.flbl{font-size:10px;font-weight:500;color:var(--muted);letter-spacing:1px;text-transform:uppercase;}
+.fi{width:100%;background:var(--paper2);border:1px solid var(--rule);color:var(--ink);padding:13px 16px;font-family:'Outfit',sans-serif;font-size:14px;border-radius:12px;outline:none;transition:all 0.2s;font-weight:300;}
+.fi:focus{border-color:var(--ink);background:white;box-shadow:0 0 0 3px rgba(12,12,14,0.05);}
+.fi::placeholder{color:var(--rule2);}
+.fi.full{grid-column:1/-1;}
+.fi-ta{min-height:90px;resize:vertical;}
+
+/* CONTACTS TABLE */
+.contacts-wrap{border:1px solid var(--rule);border-radius:14px;overflow:hidden;margin-bottom:16px;}
+.contacts-header{display:grid;grid-template-columns:1fr 1.6fr auto;gap:0;background:var(--paper2);padding:10px 16px;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted);font-weight:500;}
+.contact-row{display:grid;grid-template-columns:1fr 1.6fr auto;gap:8px;padding:10px 12px;border-top:1px solid var(--rule);align-items:center;}
+.contact-row:first-child{border-top:none;}
+.ci{background:var(--paper2);border:1px solid var(--rule);color:var(--ink);padding:9px 12px;font-family:'Outfit',sans-serif;font-size:13px;border-radius:8px;outline:none;width:100%;transition:all 0.2s;}
+.ci:focus{border-color:var(--ink);background:white;}
+.ci::placeholder{color:var(--rule2);}
+.ci-del{background:none;border:none;color:var(--rule2);cursor:pointer;font-size:16px;padding:4px 6px;border-radius:6px;transition:all 0.2s;line-height:1;}
+.ci-del:hover{color:var(--red);background:var(--red2);}
+.add-contact-btn{background:none;border:1px dashed var(--rule2);color:var(--muted);padding:10px;font-family:'Outfit',sans-serif;font-size:13px;border-radius:10px;cursor:pointer;width:100%;transition:all 0.2s;font-weight:300;}
+.add-contact-btn:hover{border-color:var(--ink);color:var(--ink);}
+
+/* FORM ACTIONS */
+.form-actions{display:flex;align-items:center;gap:16px;padding-top:24px;border-top:1px solid var(--rule);margin-top:8px;}
+.form-status{font-size:13px;color:var(--muted);font-weight:300;}
+.form-status.success{color:var(--green);}
+.form-status.error{color:var(--red);}
+
+/* DETAIL VIEW */
+.detail-header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:36px;}
+.detail-title{font-family:'Cormorant Garamond',serif;font-size:36px;font-weight:400;font-style:italic;letter-spacing:-0.3px;margin-bottom:6px;}
+.detail-meta{font-size:13px;color:var(--muted);font-weight:300;display:flex;gap:16px;align-items:center;}
+.detail-mets{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:28px;}
+.progress-bar-wrap{margin:6px 0 4px;}
+.progress-bar{height:4px;background:var(--rule);border-radius:100px;overflow:hidden;}
+.progress-fill{height:100%;background:var(--green);border-radius:100px;transition:width 1s cubic-bezier(0.16,1,0.3,1);}
+.progress-label{font-size:11px;color:var(--muted);margin-top:5px;}
+
+/* CONTACTS TABLE IN DETAIL */
+.ctable{width:100%;border-collapse:collapse;}
+.ctable th{text-align:left;padding:8px 12px;font-size:10px;letter-spacing:1.2px;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--rule);font-weight:500;}
+.ctable td{padding:13px 12px;border-bottom:1px solid rgba(0,0,0,0.04);font-size:13px;color:var(--muted);font-weight:300;}
+.ctable td:first-child{color:var(--ink);font-weight:400;}
+.ctable tr:hover td{background:var(--paper2);}
+.ctable tr:last-child td{border-bottom:none;}
+
+/* SEQUENCE PREVIEW */
+.seq-list{display:flex;flex-direction:column;gap:10px;}
+.seq-item{display:flex;gap:16px;align-items:flex-start;padding:16px;background:var(--paper2);border:1px solid var(--rule);border-radius:12px;}
+.seq-day{font-family:'Cormorant Garamond',serif;font-size:22px;font-style:italic;color:var(--muted);min-width:44px;line-height:1.2;}
+.seq-content{}
+.seq-subject{font-size:13px;font-weight:500;color:var(--ink);margin-bottom:4px;}
+.seq-preview{font-size:12px;color:var(--muted);font-weight:300;line-height:1.6;}
+
+/* EMPTY STATE */
+.empty{text-align:center;padding:80px 20px;}
+.empty-icon{font-size:40px;margin-bottom:16px;opacity:0.3;}
+.empty-title{font-family:'Cormorant Garamond',serif;font-size:24px;font-style:italic;color:var(--muted);margin-bottom:8px;}
+.empty-sub{font-size:13px;color:var(--rule2);font-weight:300;margin-bottom:28px;}
+
+/* LOADING SPINNER */
+.spin{display:inline-block;width:14px;height:14px;border-radius:50%;border:2px solid rgba(255,255,255,0.3);border-top-color:white;animation:spin 0.8s linear infinite;}
+.spin-dark{border:2px solid var(--rule);border-top-color:var(--ink);}
+@keyframes spin{to{transform:rotate(360deg)}}
+.loading-state{display:flex;align-items:center;justify-content:center;gap:12px;padding:60px;color:var(--muted);font-size:13px;}
+
+/* TOAST */
+.toast{position:fixed;bottom:28px;right:28px;background:var(--ink);color:white;padding:14px 22px;border-radius:14px;font-size:13px;font-weight:400;z-index:9999;transform:translateY(20px);opacity:0;transition:all 0.4s cubic-bezier(0.16,1,0.3,1);pointer-events:none;max-width:320px;line-height:1.5;}
+.toast.show{transform:translateY(0);opacity:1;}
+.toast.success{background:var(--green);}
+.toast.error{background:var(--red);}
+
+/* AUTH GATE */
+#authGate{position:fixed;inset:0;background:var(--ink);display:flex;align-items:center;justify-content:center;z-index:9999;transition:opacity 0.6s ease,visibility 0.6s ease;}
+#authGate.out{opacity:0;visibility:hidden;pointer-events:none;}
+.auth-box{background:white;border-radius:28px;padding:52px;width:100%;max-width:380px;box-shadow:0 40px 100px rgba(0,0,0,0.3);}
+.auth-logo{font-family:'Cormorant Garamond',serif;font-size:36px;font-style:italic;letter-spacing:2px;margin-bottom:4px;}
+.auth-sub{font-size:13px;color:var(--muted);margin-bottom:36px;font-weight:300;line-height:1.6;}
+.auth-lbl{font-size:10px;font-weight:500;color:var(--muted);margin-bottom:6px;display:block;letter-spacing:1px;text-transform:uppercase;}
+.auth-in{width:100%;background:var(--paper2);border:1px solid var(--rule);color:var(--ink);padding:13px 16px;font-family:'Outfit',sans-serif;font-size:14px;border-radius:12px;outline:none;margin-bottom:12px;transition:all 0.2s;}
+.auth-in:focus{border-color:var(--ink);background:white;}
+.auth-in::placeholder{color:var(--rule2);}
+.auth-btn{width:100%;background:var(--ink);border:none;color:white;padding:14px;font-family:'Outfit',sans-serif;font-size:14px;font-weight:500;border-radius:100px;cursor:pointer;transition:all 0.3s;margin-top:6px;}
+.auth-btn:hover{background:var(--ink2);}
+.auth-btn:disabled{opacity:0.5;cursor:not-allowed;}
+.auth-err{font-size:12px;color:var(--red);margin-top:8px;display:none;}
+.auth-err.show{display:block;}
+.auth-switch{text-align:center;margin-top:24px;font-size:13px;color:var(--muted);}
+.auth-switch a{color:var(--ink);cursor:pointer;font-weight:500;}
+.auth-divider{display:flex;align-items:center;gap:12px;margin:18px 0;}
+.auth-divider::before,.auth-divider::after{content:'';flex:1;height:1px;background:var(--rule);}
+.auth-divider span{font-size:11px;color:var(--muted);}
+
+/* VIEWS */
+.view{display:none;}
+.view.active{display:block;}
+
+/* BACK BUTTON */
+.back-btn{display:inline-flex;align-items:center;gap:8px;font-size:13px;color:var(--muted);cursor:pointer;margin-bottom:28px;transition:color 0.2s;background:none;border:none;font-family:'Outfit',sans-serif;}
+.back-btn:hover{color:var(--ink);}
+
+/* REVEAL */
+.reveal{opacity:0;transform:translateY(20px);transition:opacity 0.6s cubic-bezier(0.16,1,0.3,1),transform 0.6s cubic-bezier(0.16,1,0.3,1);}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.d1{transition-delay:0.05s}.d2{transition-delay:0.1s}.d3{transition-delay:0.15s}.d4{transition-delay:0.2s}.d5{transition-delay:0.25s}
+
+@media(max-width:768px){
+  .layout{flex-direction:column;}
+  .sidebar{width:100%;height:auto;position:static;flex-direction:row;flex-wrap:wrap;padding:16px;}
+  .sb-logo{border-bottom:none;margin-bottom:0;padding-bottom:0;}
+  .main{padding:20px;}
+  .mets{grid-template-columns:1fr 1fr;}
+  .form-grid{grid-template-columns:1fr;}
+  .camp-row{flex-direction:column;align-items:flex-start;gap:12px;}
+  .detail-mets{grid-template-columns:1fr 1fr;}
+  .topbar{flex-direction:column;gap:16px;}
+}
+</style>
+</head>
+<body>
+
+<!-- AUTH GATE -->
+<div id="authGate">
+  <div class="auth-box">
+    <div class="auth-logo">Yuga</div>
+    <div class="auth-sub" id="authSubText">Sign in to access your campaign dashboard.</div>
+
+    <div id="authLogin">
+      <label class="auth-lbl">Email</label>
+      <input class="auth-in" type="email" id="loginEmail" placeholder="you@example.com">
+      <label class="auth-lbl">Password</label>
+      <input class="auth-in" type="password" id="loginPass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+      <div class="auth-err" id="loginErr"></div>
+      <button class="auth-btn" id="loginBtn" onclick="doLogin()">Sign in →</button>
+      <div class="auth-switch">No account? <a onclick="toggleAuth('signup')">Create one</a></div>
+    </div>
+
+    <div id="authSignup" style="display:none">
+      <label class="auth-lbl">Email</label>
+      <input class="auth-in" type="email" id="signupEmail" placeholder="you@example.com">
+      <label class="auth-lbl">Password</label>
+      <input class="auth-in" type="password" id="signupPass" placeholder="Min 6 characters" onkeydown="if(event.key==='Enter')doSignup()">
+      <div class="auth-err" id="signupErr"></div>
+      <button class="auth-btn" id="signupBtn" onclick="doSignup()">Create account →</button>
+      <div class="auth-switch">Already have one? <a onclick="toggleAuth('login')">Sign in</a></div>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<!-- APP -->
+<div class="layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sb-logo">
+      <div class="sb-logo-main">Yuga</div>
+      <div class="sb-logo-sub">Email Campaigns</div>
+    </div>
+    <div class="sb-sec">
+      <div class="sb-lbl">Campaigns</div>
+      <button class="sb-it active" id="sb-list" onclick="showView('list')">
+        <span class="sb-ic">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+        </span>
+        All Campaigns
+        <span class="sb-bdg" id="sb-count" style="display:none">0</span>
+      </button>
+      <button class="sb-it" id="sb-launch" onclick="showView('launch')">
+        <span class="sb-ic">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+        </span>
+        Launch Campaign
+      </button>
+    </div>
+    <div class="sb-sec">
+      <div class="sb-lbl">Back to App</div>
+      <button class="sb-it" onclick="window.location.href='https://yuga22.netlify.app'">
+        <span class="sb-ic">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+        </span>
+        Yuga Dashboard
+      </button>
+    </div>
+    <div class="sb-user">
+      <div class="sb-user-email" id="sbUserEmail">—</div>
+      <button class="sb-logout" onclick="logout()">Sign out</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="main">
+
+    <!-- LIST VIEW -->
+    <div class="view active" id="view-list">
+      <div class="topbar reveal">
+        <div class="topbar-left">
+          <div class="eyebrow">AI Email Agent</div>
+          <div class="page-title">Campaigns</div>
+        </div>
+        <div class="topbar-right">
+          <div class="pill pill-green"><span class="pill-dot"></span> Agent Active</div>
+          <button class="btn btn-primary" onclick="showView('launch')">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+            New Campaign
+          </button>
+        </div>
+      </div>
+
+      <!-- METRICS -->
+      <div class="mets" id="metricsRow">
+        <div class="met reveal d1"><div class="met-l">Total Campaigns</div><div class="met-v" id="m-total">—</div><div class="met-c neutral">All time</div></div>
+        <div class="met reveal d2"><div class="met-l">Emails Sent</div><div class="met-v" id="m-sent">—</div><div class="met-c">This month</div></div>
+        <div class="met reveal d3"><div class="met-l">Active Contacts</div><div class="met-v" id="m-contacts">—</div><div class="met-c neutral">In sequences</div></div>
+        <div class="met reveal d4"><div class="met-l">Completion Rate</div><div class="met-v" id="m-rate">—</div><div class="met-c neutral">Finished sequences</div></div>
+      </div>
+
+      <!-- CAMPAIGN LIST -->
+      <div id="campaignList">
+        <div class="loading-state">
+          <div class="spin spin-dark"></div> Loading campaigns...
+        </div>
+      </div>
+    </div>
+
+    <!-- LAUNCH VIEW -->
+    <div class="view" id="view-launch">
+      <button class="back-btn" onclick="showView('list')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to campaigns
+      </button>
+
+      <div class="form-panel reveal">
+        <div class="form-title">Launch a Campaign</div>
+        <div class="form-sub">Describe your business and add your contacts. The AI will write a personalised 3-email drip sequence and send it automatically.</div>
+
+        <div class="form-section">
+          <div class="form-section-title">Business Details</div>
+          <div class="form-grid">
+            <div class="fg">
+              <label class="flbl">Business Name</label>
+              <input class="fi" type="text" id="bizName" placeholder="e.g. Fourin Multi Board">
+            </div>
+            <div class="fg">
+              <label class="flbl">Business Type / Niche</label>
+              <input class="fi" type="text" id="bizType" placeholder="e.g. premium whiteboard retailer">
+            </div>
+            <div class="fg" style="grid-column:1/-1">
+              <label class="flbl">Target Audience</label>
+              <input class="fi" type="text" id="bizAudience" placeholder="e.g. school principals, office managers in Kerala">
+            </div>
+            <div class="fg" style="grid-column:1/-1">
+              <label class="flbl">Key Value Proposition (optional)</label>
+              <textarea class="fi fi-ta" id="bizValue" placeholder="What makes your product/service special? The AI will weave this into every email..."></textarea>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <div class="form-section-title">Contacts</div>
+          <div class="contacts-wrap">
+            <div class="contacts-header">
+              <span>Name</span>
+              <span>Email</span>
+              <span></span>
+            </div>
+            <div id="contactRows">
+              <!-- rows added by JS -->
+            </div>
+          </div>
+          <button class="add-contact-btn" onclick="addContactRow()">+ Add contact</button>
+        </div>
+
+        <div class="form-actions">
+          <button class="btn btn-primary" id="launchBtn" onclick="launchCampaign()">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+            Launch Campaign
+          </button>
+          <button class="btn btn-ghost" onclick="showView('list')">Cancel</button>
+          <span class="form-status" id="launchStatus"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- DETAIL VIEW -->
+    <div class="view" id="view-detail">
+      <button class="back-btn" onclick="showView('list')">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+        Back to campaigns
+      </button>
+      <div id="detailContent">
+        <div class="loading-state">
+          <div class="spin spin-dark"></div> Loading...
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<script>
+// ─── CONFIG ───────────────────────────────────────────────────────────────────
+const API = 'https://yantrabackend-production.up.railway.app';
+
+// ─── STATE ────────────────────────────────────────────────────────────────────
+let token = localStorage.getItem('yuga_token') || '';
+let userEmail = localStorage.getItem('yuga_email') || '';
+
+// ─── INIT ─────────────────────────────────────────────────────────────────────
+window.addEventListener('DOMContentLoaded', () => {
+  if (token) {
+    hideAuthGate();
+    loadCampaigns();
+  }
+  addContactRow();
+  addContactRow();
+  initReveal();
+});
+
+// ─── AUTH ─────────────────────────────────────────────────────────────────────
+function toggleAuth(mode) {
+  document.getElementById('authLogin').style.display = mode === 'login' ? '' : 'none';
+  document.getElementById('authSignup').style.display = mode === 'signup' ? '' : 'none';
+  document.getElementById('authSubText').textContent = mode === 'login'
+    ? 'Sign in to access your campaign dashboard.'
+    : 'Create your Yuga account.';
+}
+
+async function doLogin() {
+  const email = document.getElementById('loginEmail').value.trim();
+  const pass = document.getElementById('loginPass').value;
+  const err = document.getElementById('loginErr');
+  const btn = document.getElementById('loginBtn');
+  err.classList.remove('show');
+  if (!email || !pass) { err.textContent = 'Please fill in all fields.'; err.classList.add('show'); return; }
+  btn.disabled = true; btn.textContent = 'Signing in...';
+  try {
+    const res = await fetch(`${API}/auth/login`, {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ email, password: pass })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Login failed');
+    saveAuth(data.token, email);
+    hideAuthGate();
+    loadCampaigns();
+  } catch(e) {
+    err.textContent = e.message; err.classList.add('show');
+  } finally { btn.disabled = false; btn.textContent = 'Sign in →'; }
+}
+
+async function doSignup() {
+  const email = document.getElementById('signupEmail').value.trim();
+  const pass = document.getElementById('signupPass').value;
+  const err = document.getElementById('signupErr');
+  const btn = document.getElementById('signupBtn');
+  err.classList.remove('show');
+  if (!email || !pass) { err.textContent = 'Please fill in all fields.'; err.classList.add('show'); return; }
+  if (pass.length < 6) { err.textContent = 'Password must be at least 6 characters.'; err.classList.add('show'); return; }
+  btn.disabled = true; btn.textContent = 'Creating account...';
+  try {
+    const res = await fetch(`${API}/auth/register`, {
+      method: 'POST', headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({ email, password: pass })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Sign up failed');
+    saveAuth(data.token, email);
+    hideAuthGate();
+    loadCampaigns();
+    showToast('Account created — welcome to Yuga', 'success');
+  } catch(e) {
+    err.textContent = e.message; err.classList.add('show');
+  } finally { btn.disabled = false; btn.textContent = 'Create account →'; }
+}
+
+function saveAuth(t, email) {
+  token = t; userEmail = email;
+  localStorage.setItem('yuga_token', t);
+  localStorage.setItem('yuga_email', email);
+  document.getElementById('sbUserEmail').textContent = email;
+}
+
+function hideAuthGate() {
+  document.getElementById('authGate').classList.add('out');
+  document.getElementById('sbUserEmail').textContent = userEmail;
+}
+
+function logout() {
+  token = ''; userEmail = '';
+  localStorage.removeItem('yuga_token');
+  localStorage.removeItem('yuga_email');
+  location.reload();
+}
+
+// ─── VIEWS ────────────────────────────────────────────────────────────────────
+function showView(name) {
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.getElementById(`view-${name}`).classList.add('active');
+  document.querySelectorAll('.sb-it').forEach(b => b.classList.remove('active'));
+  const sb = document.getElementById(`sb-${name}`);
+  if (sb) sb.classList.add('active');
+  if (name === 'list') loadCampaigns();
+  window.scrollTo(0, 0);
+}
+
+// ─── CAMPAIGNS ────────────────────────────────────────────────────────────────
+async function loadCampaigns() {
+  const el = document.getElementById('campaignList');
+  el.innerHTML = '<div class="loading-state"><div class="spin spin-dark"></div> Loading campaigns...</div>';
+  try {
+    const res = await fetch(`${API}/campaigns`, { headers: { Authorization: `Bearer ${token}` } });
+    if (res.status === 401) { logout(); return; }
+    const data = await res.json();
+    const campaigns = data.campaigns || [];
+
+    // update metrics
+    const totalSent = campaigns.reduce((s,c) => s + (c.emails_sent||0), 0);
+    const totalContacts = campaigns.reduce((s,c) => s + (c.total_contacts||0), 0);
+    const completed = campaigns.filter(c => c.status === 'completed').length;
+    const rate = campaigns.length ? Math.round(completed / campaigns.length * 100) : 0;
+    document.getElementById('m-total').textContent = campaigns.length;
+    document.getElementById('m-sent').textContent = totalSent;
+    document.getElementById('m-contacts').textContent = totalContacts;
+    document.getElementById('m-rate').textContent = `${rate}%`;
+    const badge = document.getElementById('sb-count');
+    if (campaigns.length) { badge.textContent = campaigns.length; badge.style.display = ''; }
+
+    if (!campaigns.length) {
+      el.innerHTML = `<div class="empty">
+        <div class="empty-icon">✉</div>
+        <div class="empty-title">No campaigns yet</div>
+        <div class="empty-sub">Launch your first AI-powered email campaign in minutes.</div>
+        <button class="btn btn-primary" onclick="showView('launch')">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+          Launch first campaign
+        </button>
+      </div>`;
+      return;
+    }
+
+    el.innerHTML = `<div class="campaign-grid">${campaigns.map(c => campCard(c)).join('')}</div>`;
+    initReveal();
+  } catch(e) {
+    el.innerHTML = `<div class="empty"><div class="empty-title">Could not load campaigns</div><div class="empty-sub">${e.message}</div></div>`;
+  }
+}
+
+function campCard(c) {
+  const statusPill = {
+    active: '<span class="pill pill-green"><span class="pill-dot"></span> Active</span>',
+    paused: '<span class="pill pill-amber"><span class="pill-dot"></span> Paused</span>',
+    completed: '<span class="pill pill-muted"><span class="pill-dot"></span> Completed</span>',
+  }[c.status] || `<span class="pill pill-muted">${c.status}</span>`;
+  const date = new Date(c.created_at).toLocaleDateString('en-IN', {day:'numeric',month:'short',year:'numeric'});
+  return `<div class="camp-card reveal" onclick="openCampaign('${c.id}')">
+    <div class="camp-row">
+      <div>
+        <div class="camp-name">${esc(c.business_name||'Untitled Campaign')}</div>
+        <div class="camp-meta" style="display:flex;gap:10px;align-items:center;margin-top:4px">
+          ${statusPill}
+          <span>${esc(c.business_type||'')}</span>
+          <span>Started ${date}</span>
+        </div>
+      </div>
+      <div class="camp-stats">
+        <div class="camp-stat">
+          <div class="camp-stat-v">${c.total_contacts||0}</div>
+          <div class="camp-stat-l">Contacts</div>
+        </div>
+        <div class="camp-stat">
+          <div class="camp-stat-v">${c.emails_sent||0}</div>
+          <div class="camp-stat-l">Sent</div>
+        </div>
+        <div class="camp-actions" onclick="event.stopPropagation()">
+          <button class="btn btn-ghost btn-sm" onclick="togglePause('${c.id}','${c.status}',this)">
+            ${c.status === 'paused' ? 'Resume' : 'Pause'}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>`;
+}
+
+async function openCampaign(id) {
+  showView('detail');
+  document.getElementById('detailContent').innerHTML =
+    '<div class="loading-state"><div class="spin spin-dark"></div> Loading campaign...</div>';
+  try {
+    const res = await fetch(`${API}/campaigns/${id}`, { headers: { Authorization: `Bearer ${token}` } });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Failed to load');
+    renderDetail(data);
+  } catch(e) {
+    document.getElementById('detailContent').innerHTML =
+      `<div class="empty"><div class="empty-title">Error</div><div class="empty-sub">${e.message}</div></div>`;
+  }
+}
+
+function renderDetail(d) {
+  const c = d.campaign;
+  const contacts = d.contacts || [];
+  const seq = c.sequence || [];
+  const sent = c.emails_sent || 0;
+  const total = c.total_contacts || 0;
+  const pct = total ? Math.round(sent / (total * Math.max(seq.length,1)) * 100) : 0;
+  const completed = contacts.filter(x => x.status === 'completed').length;
+  const active = contacts.filter(x => x.status === 'active').length;
+
+  const statusPill = {
+    active: '<span class="pill pill-green"><span class="pill-dot"></span> Active</span>',
+    paused: '<span class="pill pill-amber"><span class="pill-dot"></span> Paused</span>',
+    completed: '<span class="pill pill-muted">Completed</span>',
+  }[c.status] || `<span class="pill pill-muted">${c.status}</span>`;
+
+  document.getElementById('detailContent').innerHTML = `
+    <div class="detail-header reveal">
+      <div>
+        <div class="detail-title">${esc(c.business_name||'Campaign')}</div>
+        <div class="detail-meta">
+          ${statusPill}
+          <span>${esc(c.business_type||'')}</span>
+          <span>Started ${new Date(c.created_at).toLocaleDateString('en-IN',{day:'numeric',month:'short',year:'numeric'})}</span>
+        </div>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button class="btn btn-ghost btn-sm" onclick="togglePause('${c.id}','${c.status}',this)">
+          ${c.status === 'paused' ? 'Resume Campaign' : 'Pause Campaign'}
+        </button>
+      </div>
+    </div>
+
+    <div class="detail-mets reveal d1">
+      <div class="met"><div class="met-l">Emails Sent</div><div class="met-v">${sent}</div><div class="progress-bar-wrap"><div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div><div class="progress-label">${pct}% of sequence complete</div></div></div>
+      <div class="met"><div class="met-l">Active Contacts</div><div class="met-v">${active}</div><div class="met-c neutral">Still in sequence</div></div>
+      <div class="met"><div class="met-l">Completed</div><div class="met-v">${completed}</div><div class="met-c">Full sequence received</div></div>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1.6fr 1fr;gap:20px;margin-bottom:20px">
+      <div class="card reveal d2">
+        <div class="card-title">Contacts <span>${contacts.length} total</span></div>
+        <table class="ctable">
+          <thead><tr><th>Name</th><th>Email</th><th>Step</th><th>Status</th><th>Last Sent</th></tr></thead>
+          <tbody>
+            ${contacts.map(ct => `<tr>
+              <td>${esc(ct.name||'—')}</td>
+              <td>${esc(ct.email)}</td>
+              <td>${ct.current_step} / ${seq.length}</td>
+              <td>${statusBadge(ct.status)}</td>
+              <td>${ct.last_sent_at ? new Date(ct.last_sent_at).toLocaleDateString('en-IN',{day:'numeric',month:'short'}) : '—'}</td>
+            </tr>`).join('')}
+          </tbody>
+        </table>
+      </div>
+
+      <div class="card reveal d3">
+        <div class="card-title">Email Sequence <span>${seq.length} emails</span></div>
+        <div class="seq-list">
+          ${seq.map((s,i) => `<div class="seq-item">
+            <div class="seq-day">Day<br>${s.day||i}</div>
+            <div class="seq-content">
+              <div class="seq-subject">${esc(s.subject||'')}</div>
+              <div class="seq-preview">${esc((s.body||'').substring(0,100))}${(s.body||'').length>100?'…':''}</div>
+            </div>
+          </div>`).join('')}
+        </div>
+      </div>
+    </div>`;
+  initReveal();
+}
+
+function statusBadge(s) {
+  const map = { active:'pill-green', completed:'pill-muted', failed:'pill-red', paused:'pill-amber' };
+  return `<span class="pill ${map[s]||'pill-muted'}">${s}</span>`;
+}
+
+async function togglePause(id, currentStatus, btn) {
+  btn.disabled = true;
+  btn.textContent = '...';
+  try {
+    const res = await fetch(`${API}/campaigns/${id}/pause`, {
+      method: 'POST', headers: { Authorization: `Bearer ${token}` }
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Failed');
+    const newStatus = data.status;
+    btn.textContent = newStatus === 'paused' ? 'Resume' : 'Pause';
+    btn.disabled = false;
+    showToast(newStatus === 'paused' ? 'Campaign paused' : 'Campaign resumed', 'success');
+    loadCampaigns();
+  } catch(e) {
+    btn.disabled = false;
+    btn.textContent = currentStatus === 'paused' ? 'Resume' : 'Pause';
+    showToast(e.message, 'error');
+  }
+}
+
+// ─── CONTACTS ─────────────────────────────────────────────────────────────────
+let contactCount = 0;
+function addContactRow() {
+  contactCount++;
+  const id = `cr-${contactCount}`;
+  const row = document.createElement('div');
+  row.className = 'contact-row';
+  row.id = id;
+  row.innerHTML = `
+    <input class="ci" type="text" placeholder="Full name" data-role="name">
+    <input class="ci" type="email" placeholder="email@example.com" data-role="email">
+    <button class="ci-del" onclick="removeRow('${id}')" title="Remove">×</button>`;
+  document.getElementById('contactRows').appendChild(row);
+}
+
+function removeRow(id) {
+  const rows = document.getElementById('contactRows').querySelectorAll('.contact-row');
+  if (rows.length <= 1) { showToast('You need at least one contact', 'error'); return; }
+  document.getElementById(id).remove();
+}
+
+// ─── LAUNCH ───────────────────────────────────────────────────────────────────
+async function launchCampaign() {
+  const bizName = document.getElementById('bizName').value.trim();
+  const bizType = document.getElementById('bizType').value.trim();
+  const bizAudience = document.getElementById('bizAudience').value.trim();
+  const bizValue = document.getElementById('bizValue').value.trim();
+  const status = document.getElementById('launchStatus');
+  const btn = document.getElementById('launchBtn');
+
+  if (!bizName || !bizType || !bizAudience) {
+    status.textContent = 'Please fill in business name, type, and target audience.';
+    status.className = 'form-status error';
+    return;
+  }
+
+  const rows = document.getElementById('contactRows').querySelectorAll('.contact-row');
+  const contacts = [];
+  let hasError = false;
+  rows.forEach(row => {
+    const name = row.querySelector('[data-role="name"]').value.trim();
+    const email = row.querySelector('[data-role="email"]').value.trim();
+    if (email) contacts.push({ name: name || email.split('@')[0], email });
+    else if (name) hasError = true;
+  });
+
+  if (!contacts.length) {
+    status.textContent = 'Add at least one contact with an email address.';
+    status.className = 'form-status error';
+    return;
+  }
+  if (hasError) {
+    status.textContent = 'Some contacts are missing email addresses.';
+    status.className = 'form-status error';
+    return;
+  }
+
+  btn.disabled = true;
+  btn.innerHTML = '<div class="spin"></div> Generating sequence & sending...';
+  status.textContent = 'AI is writing your email sequence...';
+  status.className = 'form-status';
+
+  try {
+    const res = await fetch(`${API}/campaigns/launch`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+      body: JSON.stringify({
+        business_name: bizName,
+        business_type: bizType,
+        target_audience: bizAudience,
+        value_proposition: bizValue,
+        contacts
+      })
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Launch failed');
+
+    status.textContent = `Launched! ${data.sent} emails sent, ${data.failed} failed.`;
+    status.className = 'form-status success';
+    showToast(`Campaign launched — ${data.sent} emails sent`, 'success');
+
+    // reset form
+    document.getElementById('bizName').value = '';
+    document.getElementById('bizType').value = '';
+    document.getElementById('bizAudience').value = '';
+    document.getElementById('bizValue').value = '';
+    document.getElementById('contactRows').innerHTML = '';
+    contactCount = 0;
+    addContactRow();
+    addContactRow();
+
+    setTimeout(() => showView('list'), 1800);
+  } catch(e) {
+    status.textContent = e.message;
+    status.className = 'form-status error';
+    showToast(e.message, 'error');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg> Launch Campaign`;
+  }
+}
+
+// ─── UTILS ────────────────────────────────────────────────────────────────────
+function showToast(msg, type = '') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast ${type} show`;
+  setTimeout(() => t.classList.remove('show'), 3500);
+}
+
+function esc(str) {
+  return String(str||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function initReveal() {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.1 });
+  document.querySelectorAll('.reveal:not(.visible)').forEach(el => observer.observe(el));
+}
+</script>
+</body>
+</html>
