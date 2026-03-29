@@ -428,7 +428,7 @@ async function doLogin() {
   if (!email || !pass) { err.textContent = 'Please fill in all fields.'; err.classList.add('show'); return; }
   btn.disabled = true; btn.textContent = 'Signing in...';
   try {
-    const res = await fetch(`${API}/auth/login`, {
+    const res = await fetch(`${API}/auth/signin`, {
       method: 'POST', headers: {'Content-Type':'application/json'},
       body: JSON.stringify({ email, password: pass })
     });
@@ -452,7 +452,7 @@ async function doSignup() {
   if (pass.length < 6) { err.textContent = 'Password must be at least 6 characters.'; err.classList.add('show'); return; }
   btn.disabled = true; btn.textContent = 'Creating account...';
   try {
-    const res = await fetch(`${API}/auth/register`, {
+    const res = await fetch(`${API}/auth/signup`, {
       method: 'POST', headers: {'Content-Type':'application/json'},
       body: JSON.stringify({ email, password: pass })
     });
