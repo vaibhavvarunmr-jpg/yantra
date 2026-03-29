@@ -196,16 +196,41 @@ body{background:var(--paper2);color:var(--ink);font-family:'Outfit',sans-serif;m
 .reveal.visible{opacity:1;transform:translateY(0);}
 .d1{transition-delay:0.05s}.d2{transition-delay:0.1s}.d3{transition-delay:0.15s}.d4{transition-delay:0.2s}.d5{transition-delay:0.25s}
 
+/* MOBILE NAV */
+.mob-topbar{display:none;position:fixed;top:0;left:0;right:0;height:56px;background:white;border-bottom:1px solid var(--rule);z-index:100;align-items:center;justify-content:space-between;padding:0 18px;}
+.mob-logo{font-family:'Cormorant Garamond',serif;font-size:20px;font-style:italic;letter-spacing:2px;}
+.mob-logo-sub{font-size:9px;color:var(--muted);letter-spacing:2px;text-transform:uppercase;}
+.mob-bnav{display:none;position:fixed;bottom:0;left:0;right:0;background:white;border-top:1px solid var(--rule);z-index:100;padding:8px 0 env(safe-area-inset-bottom,8px);}
+.mob-bnav-inner{display:flex;justify-content:space-around;align-items:center;}
+.mob-bnav-btn{display:flex;flex-direction:column;align-items:center;gap:3px;background:none;border:none;cursor:pointer;padding:6px 16px;font-family:'Outfit',sans-serif;color:var(--muted);transition:color 0.2s;font-size:10px;letter-spacing:0.5px;}
+.mob-bnav-btn.active{color:var(--ink);}
+.mob-bnav-btn svg{width:20px;height:20px;}
+
 @media(max-width:768px){
-  .layout{flex-direction:column;}
-  .sidebar{width:100%;height:auto;position:static;flex-direction:row;flex-wrap:wrap;padding:16px;}
-  .sb-logo{border-bottom:none;margin-bottom:0;padding-bottom:0;}
-  .main{padding:20px;}
-  .mets{grid-template-columns:1fr 1fr;}
+  .sidebar{display:none;}
+  .mob-topbar{display:flex;}
+  .mob-bnav{display:block;}
+  .layout{display:block;}
+  .main{padding:16px;padding-top:72px;padding-bottom:80px;}
+  .mets{grid-template-columns:1fr 1fr;gap:10px;margin-bottom:20px;}
+  .met{padding:18px 16px;}
+  .met-v{font-size:28px;}
   .form-grid{grid-template-columns:1fr;}
-  .camp-row{flex-direction:column;align-items:flex-start;gap:12px;}
+  .form-panel{padding:24px 20px;}
+  .form-title{font-size:24px;}
+  .form-sub{font-size:13px;margin-bottom:24px;}
+  .camp-row{flex-direction:column;align-items:flex-start;gap:10px;}
+  .camp-stats{gap:16px;}
+  .camp-card{padding:20px;}
+  .camp-actions{width:100%;justify-content:flex-end;}
   .detail-mets{grid-template-columns:1fr 1fr;}
-  .topbar{flex-direction:column;gap:16px;}
+  .detail-header{flex-direction:column;gap:16px;}
+  .detail-title{font-size:26px;}
+  .topbar{flex-direction:column;gap:12px;margin-bottom:24px;}
+  .topbar-left .page-title{font-size:30px;}
+  .contacts-header{grid-template-columns:1fr 1.4fr auto;}
+  .contact-row{grid-template-columns:1fr 1.4fr auto;}
+  .auth-box{padding:36px 28px;}
 }
 </style>
 </head>
@@ -241,6 +266,37 @@ body{background:var(--paper2);color:var(--ink);font-family:'Outfit',sans-serif;m
 
 <!-- TOAST -->
 <div class="toast" id="toast"></div>
+
+<!-- MOBILE TOP BAR -->
+<div class="mob-topbar">
+  <div>
+    <div class="mob-logo">Yuga</div>
+    <div class="mob-logo-sub">Email Campaigns</div>
+  </div>
+  <div class="pill pill-green" style="font-size:10px;"><span class="pill-dot"></span> Active</div>
+</div>
+
+<!-- MOBILE BOTTOM NAV -->
+<div class="mob-bnav">
+  <div class="mob-bnav-inner">
+    <button class="mob-bnav-btn active" id="mbn-list" onclick="showView('list');setMobNav('list')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/></svg>
+      Campaigns
+    </button>
+    <button class="mob-bnav-btn" id="mbn-launch" onclick="showView('launch');setMobNav('launch')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg>
+      New
+    </button>
+    <button class="mob-bnav-btn" onclick="window.location.href='https://yuga22.netlify.app'">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"/></svg>
+      Dashboard
+    </button>
+    <button class="mob-bnav-btn" onclick="logout()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      Sign out
+    </button>
+  </div>
+</div>
 
 <!-- APP -->
 <div class="layout">
@@ -495,6 +551,12 @@ function showView(name) {
   if (sb) sb.classList.add('active');
   if (name === 'list') loadCampaigns();
   window.scrollTo(0, 0);
+}
+
+function setMobNav(name) {
+  document.querySelectorAll('.mob-bnav-btn').forEach(b => b.classList.remove('active'));
+  const btn = document.getElementById(`mbn-${name}`);
+  if (btn) btn.classList.add('active');
 }
 
 // ─── CAMPAIGNS ────────────────────────────────────────────────────────────────
